@@ -1,4 +1,4 @@
-package model.enums;
+package sa.common.model.enums;
 
 public enum EventType {
     VACATION,

@@ -1,11 +1,32 @@
 spring:
   application:
     name: events-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: agenda
 server:
   port: 8091
+
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+
+security:
+ oauth2:
+   resource:
+     token-info-uri: http://localhost:8092/oauth/check_token
+   client:
+      client-id: kassad
+      client-secret: kassad # $2a$08$kU3H5uvRJlZ2UvcaFpi5GOriMuBtp3.VR8luvgYJ6c5F.I5mQpZFS
+      authorized-grant-types: authorization_code,refresh_token,password
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
