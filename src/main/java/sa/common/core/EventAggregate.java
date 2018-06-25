@@ -15,20 +15,20 @@ public class EventAggregate {
 
     @AggregateIdentifier
     private String id;
-    private String ownerId;
+    private String username;
     private LocalDate when;
     private EventType type;
 
 
     @CommandHandler
     public EventAggregate(CreateEventCommand cmd) {
-        apply(new EventCreatedEvent(cmd.getId(), cmd.getOwnerId(), cmd.getWhen(), cmd.getType()));
+        apply(new EventCreatedEvent(cmd.getId(), cmd.getUsername(), cmd.getWhen(), cmd.getType()));
     }
 
     @EventSourcingHandler
     public void on(EventCreatedEvent event) {
         this.id = event.getId();
-        this.ownerId = event.getOwnerId();
+        this.username = event.getUsername();
         this.when = event.getWhen();
         this.type = event.getType();
     }

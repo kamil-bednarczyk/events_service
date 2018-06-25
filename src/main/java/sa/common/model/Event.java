@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Event {
     @Id
     private String id;
-    private String ownerId;
+    private String username;
     private LocalDate when;
     private EventType type;
 }

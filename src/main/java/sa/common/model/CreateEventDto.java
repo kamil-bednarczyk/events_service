@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class CreateEventDto {
 
     @NotBlank
-    private String ownerId;
+    private String username;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate when;
     private EventType type;

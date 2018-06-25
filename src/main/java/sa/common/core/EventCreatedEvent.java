@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class EventCreatedEvent {
 
     private String id;
-    private String ownerId;
+    private String username;
     private LocalDate when;
     private EventType type;
 }

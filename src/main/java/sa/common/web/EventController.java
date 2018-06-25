@@ -33,13 +33,13 @@ public class EventController {
     @PostMapping
     public void createEvent(@RequestBody @Valid CreateEventDto dto) {
         commandGateway.send(new CreateEventCommand(UUID.randomUUID().toString(),
-                dto.getOwnerId(), dto.getWhen(), dto.getType()));
+                dto.getUsername(), dto.getWhen(), dto.getType()));
     }
 
     public static EventDto convertToEventDto(Event event) {
         return EventDto.builder()
                 .id(event.getId())
-                .ownerId(event.getOwnerId())
+                .ownerId(event.getUsername())
                 .type(event.getType().toString())
                 .when(event.getWhen())
                 .build();
