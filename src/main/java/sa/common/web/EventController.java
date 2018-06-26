@@ -1,6 +1,7 @@
 package sa.common.web;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sa.common.core.CreateEventCommand;
 import sa.common.model.CreateEventDto;
@@ -31,9 +32,10 @@ public class EventController {
     }
 
     @PostMapping
-    public void createEvent(@RequestBody @Valid CreateEventDto dto) {
-        commandGateway.send(new CreateEventCommand(UUID.randomUUID().toString(),
-                dto.getUsername(), dto.getWhen(), dto.getType()));
+    public void createEvent(@RequestBody @Valid List<CreateEventDto> dtos) {
+        dtos.forEach(dto ->
+                commandGateway.send(new CreateEventCommand(UUID.randomUUID().toString(),
+                        dto.getUsername(), dto.getWhen(), dto.getType())));
     }
 
     public static EventDto convertToEventDto(Event event) {

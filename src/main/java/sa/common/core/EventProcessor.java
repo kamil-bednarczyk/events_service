@@ -20,7 +20,7 @@ public class EventProcessor {
     public void on(EventCreatedEvent event) {
         eventRepository.save(Event.builder()
                 .id(event.getId())
-                .ownerId(event.getUsername())
+                .username(event.getUsername())
                 .type(event.getType())
                 .when(event.getWhen())
                 .build());

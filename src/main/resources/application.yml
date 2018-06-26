@@ -30,3 +30,7 @@ logging:
     org:
       springframework:
         security: DEBUG
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG

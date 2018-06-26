@@ -1,6 +1,7 @@
 package sa.common.model.enums;
 
 public enum EventType {
+    NO_EVENT,
     VACATION,
     TRAINING,
     HOME_OFFICE,
