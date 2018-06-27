@@ -1,7 +1,8 @@
 package sa.common.web;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.http.ResponseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import sa.common.core.CreateEventCommand;
 import sa.common.model.CreateEventDto;
@@ -9,6 +10,7 @@ import sa.common.model.Event;
 import sa.common.model.EventDto;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,6 +33,16 @@ public class EventController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/in-range/{username}/{start}/{end}")
+    public List<EventDto> getEventsBetween(@PathVariable("username") String username,
+                                           @PathVariable("start") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
+                                           @PathVariable("end") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
+        return eventRepository.findByUsernameAndDateBetween(username, start, end)
+                .stream()
+                .map(EventController::convertToEventDto)
+                .collect(Collectors.toList());
+    }
+
     @PostMapping
     public void createEvent(@RequestBody @Valid List<CreateEventDto> dtos) {
         dtos.forEach(dto ->
@@ -43,7 +55,7 @@ public class EventController {
                 .id(event.getId())
                 .ownerId(event.getUsername())
                 .type(event.getType().toString())
-                .when(event.getWhen())
+                .when(event.getDate())
                 .build();
     }
 }

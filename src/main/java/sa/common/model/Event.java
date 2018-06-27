@@ -13,6 +13,6 @@ public class Event {
     @Id
     private String id;
     private String username;
-    private LocalDate when;
+    private LocalDate date;
     private EventType type;
 }

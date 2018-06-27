@@ -22,7 +22,7 @@ public class EventProcessor {
                 .id(event.getId())
                 .username(event.getUsername())
                 .type(event.getType())
-                .when(event.getWhen())
+                .date(event.getWhen())
                 .build());
         log.info("Event persisted in database: " + event.toString());
     }
