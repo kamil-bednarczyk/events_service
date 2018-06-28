@@ -1,9 +1,9 @@
 package sa.common.core;
 
 import lombok.extern.log4j.Log4j2;
-import sa.common.model.Event;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
+import sa.common.model.Event;
 import sa.common.web.EventRepository;
 
 @Log4j2
@@ -18,6 +18,8 @@ public class EventProcessor {
 
     @EventHandler
     public void on(EventCreatedEvent event) {
+        eventRepository.findByUsernameAndDate(event.getUsername(), event.getWhen()).ifPresent(eventRepository::delete);
+
         eventRepository.save(Event.builder()
                 .id(event.getId())
                 .username(event.getUsername())
@@ -26,5 +28,6 @@ public class EventProcessor {
                 .build());
         log.info("Event persisted in database: " + event.toString());
     }
+
 
 }

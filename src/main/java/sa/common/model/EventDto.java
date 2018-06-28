@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Value
 @Builder
-public class EventDto {
+public class EventDto{
 
     private String id;
     private String ownerId;
