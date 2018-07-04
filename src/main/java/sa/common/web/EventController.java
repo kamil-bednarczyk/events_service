@@ -42,13 +42,15 @@ public class EventController {
 
         List<LocalDate> days = LongStream.range(start.toEpochDay(), end.toEpochDay()).mapToObj(LocalDate::ofEpochDay).collect(Collectors.toList());
 
-        Map<LocalDate, EventDto> events = eventRepository.findByUsernameAndDateBetween(username, start, end)
+        Map<LocalDate, EventDto> events = eventRepository.findByUsernameAndDateBetween(username, start.minusDays(1) //  start date adjustment
+                , end)
                 .stream()
                 .map(EventController::convertToEventDto)
                 .collect(Collectors.toMap(EventDto::getWhen, e -> e));
 
-        List<EventDto> allEvents = days.stream().filter(day -> !events.keySet().contains(day)).map(day -> EventDto.builder()
-                .id(EventType.NO_EVENT.toString())
+        List<EventDto> allEvents = days.stream().filter(day -> !events.keySet().contains(day))
+                .map(day -> EventDto.builder()
+                .id(UUID.randomUUID().toString())
                 .ownerId("")
                 .when(day)
                 .type(EventType.NO_EVENT.toString()).build()).collect(Collectors.toList());
