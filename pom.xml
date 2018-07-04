@@ -97,6 +97,20 @@
             <artifactId>axon-spring-boot-autoconfigure</artifactId>
             <version>3.2.2</version>
         </dependency>
+        <!-- Embedeed MongoDb  -->
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>1.50.5</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Embedeed MongoDb  -->
+        <dependency>
+            <groupId>cz.jirutka.spring</groupId>
+            <artifactId>embedmongo-spring</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

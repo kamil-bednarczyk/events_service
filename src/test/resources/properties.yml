@@ -1,0 +1,10 @@
+eureka:
+  client:
+    enabled: false
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 56429
+      database: embeded_db
