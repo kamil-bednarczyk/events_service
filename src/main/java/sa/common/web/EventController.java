@@ -3,7 +3,7 @@ package sa.common.web;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import sa.common.core.CreateEventCommand;
+import sa.common.axon.CreateEventCommand;
 import sa.common.model.CreateEventDto;
 import sa.common.model.Event;
 import sa.common.model.EventDto;
@@ -39,28 +39,26 @@ public class EventController {
     public List<EventDto> getEventsBetween(@PathVariable("username") String username,
                                            @PathVariable("start") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
                                            @PathVariable("end") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
-
-        List<LocalDate> days = LongStream.range(start.toEpochDay(), end.toEpochDay()).mapToObj(LocalDate::ofEpochDay).collect(Collectors.toList());
-
-        Map<LocalDate, EventDto> events = eventRepository.findByUsernameAndDateBetween(username, start.minusDays(1) //  start date adjustment
+        //List<LocalDate> days = LongStream.range(start.toEpochDay(), end.toEpochDay()).mapToObj(LocalDate::ofEpochDay).collect(Collectors.toList());
+        Map<LocalDate, EventDto> existedEvents = eventRepository.findByUsernameAndDateBetween(username, start.minusDays(1) //  start date adjustment
                 , end)
                 .stream()
                 .map(EventController::convertToEventDto)
                 .collect(Collectors.toMap(EventDto::getWhen, e -> e));
 
-        List<EventDto> allEvents = days.stream().filter(day -> !events.keySet().contains(day))
+        List<EventDto> emptyEvents = LongStream.range(start.toEpochDay(), end.toEpochDay())
+                .mapToObj(LocalDate::ofEpochDay)
+                .filter(day -> !existedEvents.keySet().contains(day))
                 .map(day -> EventDto.builder()
-                .id(UUID.randomUUID().toString())
-                .ownerId("")
-                .when(day)
-                .type(EventType.NO_EVENT.toString()).build()).collect(Collectors.toList());
+                        .id(UUID.randomUUID().toString())
+                        .ownerId("")
+                        .when(day)
+                        .type(EventType.NO_EVENT.toString()).build()).collect(Collectors.toList());
 
-        allEvents.addAll(events.values());
-        allEvents.sort((e1, e2) -> e1.getWhen().isBefore(e2.getWhen()) ? -1 : 1);
-        return allEvents;
-
+        emptyEvents.addAll(existedEvents.values());
+        emptyEvents.sort((e1, e2) -> e1.getWhen().isBefore(e2.getWhen()) ? -1 : 1);
+        return emptyEvents;
     }
-
 
     @PostMapping
     public void createEvent(@RequestBody @Valid List<CreateEventDto> dtos) {

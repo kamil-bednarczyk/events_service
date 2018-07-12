@@ -1,4 +1,4 @@
-package sa.common.core;
+package sa.common.axon;
 
 import lombok.Value;
 import sa.common.model.enums.EventType;
